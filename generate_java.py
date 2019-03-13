@@ -27,19 +27,23 @@ DEFAULT_CLASS_IMPORTS = [
 CLASS_IMPORTS = {
 }
 
-PACKAGE = "//TODO ";
+PACKAGE = "// TODO";
 
 # 'http://192.168.1.172:89/company/getCompanyInfo/user_code/5c57eab3600e11e48da914dae974c66c/company_code/5c57f114600e11e48da914dae974c66c'
 def main():
     arg = args();
-    url = arg.url
 
-    if not url:
-        print "please input --url, specify The need for automatic generation of the class interface,Must be a JSON structure"
+    # url = arg.url
+    # if not url:
+    # print "please input --url, specify the need for automatic generation of the class interface, must be a JSON structure"
+    # exit()
+
+    content = arg.json
+    if not content:
+        print "please input --json, specify the need for automatic generation of the class interface, must be a JSON structure"
         exit()
-    
+
     className = arg.className
-	
     if not className:
 		print "please input --className, specify root class name" 
 		exit()
@@ -53,8 +57,9 @@ def main():
     
     outType = arg.outType
     
-    httpConn = urllib2.urlopen(url)
-    content = httpConn.read()
+    # httpConn = urllib2.urlopen(url)
+    # content = httpConn.read()
+    # jsondata = json.loads(content)
     jsondata = json.loads(content)
     
     if isinstance(jsondata, (list)):
@@ -90,11 +95,12 @@ def writJava(fileName, content):
 
 def args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--url", help="parsed json url",type=str)
+    # parser.add_argument("--url", help="parsed json url", type=str)
+    parser.add_argument("--json", help="parsed json content", type=str)
     parser.add_argument("--className", help="specify root class name")
-    parser.add_argument("--outPath", default=os.getcwd(), help="Automatic generation of storage file path ,default current path.")
-    parser.add_argument("--package", default=PACKAGE, help="Generating the .java file class package name")
-    parser.add_argument("--outType", default=2, type=int, help=" 1: parser       2: Gson")
+    parser.add_argument("--outPath", default=os.getcwd(), help="automatic generation of storage file path, default current path.")
+    parser.add_argument("--package", default=PACKAGE, help="generating the .java file class package name")
+    parser.add_argument("--outType", default=2, type=int, help="1: parser 2: gson")
     return parser.parse_args()
 
 ################################################################################################
@@ -188,8 +194,8 @@ def GenerateClass_bean(type_name, attributes, isGson=False):
         if typ == LIST or typ == OBJCET:
             typ = children[0]
         
-        if isGson:
-            lines.extend(GosnSerializedName(attribute_name).split('\n'));
+        # if isGson:
+        # lines.extend(GosnSerializedName(attribute_name).split('\n'));
         lines.extend(Field(attribute_name, typ).split('\n'))
         lines.append('')
         
