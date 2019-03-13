@@ -47,7 +47,6 @@ def main():
     outPath = arg.outPath
     global PACKAGE 
     PACKAGE = arg.package
-
     
     if not os.path.exists(outPath):
         outPath = os.getcwd()
@@ -95,7 +94,7 @@ def args():
     parser.add_argument("--className", help="specify root class name")
     parser.add_argument("--outPath", default=os.getcwd(), help="Automatic generation of storage file path ,default current path.")
     parser.add_argument("--package", default=PACKAGE, help="Generating the .java file class package name")
-    parser.add_argument("--outType", default=2, type=int, help=" 1: parser       2:Gson")
+    parser.add_argument("--outType", default=2, type=int, help=" 1: parser       2: Gson")
     return parser.parse_args()
 
 ################################################################################################
@@ -126,7 +125,7 @@ def parserAttributes(clazzName, jsondict, result={}):
                 typeList = "List<" + subTyp + ">"
                 attributes.setdefault(key, (LIST, [typeList,subTyp]));
             else:
-                # 没有数据添加TODO标记
+                # 没有数据添加 TODO 标记
                 attributes.setdefault(key, (TODO, [TODO]));
                 pass
         elif isinstance(value, (str, unicode)) :
@@ -157,7 +156,7 @@ package %(package)s.type;
  *
  * @author Galen Wu (wuzhenlin135@126.com)
  */
-public class %(type_name)s %(interfaces)s{
+public class %(type_name)s %(interfaces)s {
 """
 
 # getter 
@@ -173,14 +172,14 @@ SETTER = """\
 %(annotate)s}
 """
 
-# 布尔型get方法 ，没有get
+# 布尔型 get 方法，没有 get
 BOOLEAN_GETTER = """\
 %(annotate)spublic %(attribute_type)s %(attribute_name)s() {
 %(annotate)s    return %(field_name)s;
 %(annotate)s}
 """
 
-# type_name 文件名。 attributes 字段名，类型
+# type_name 文件名 attributes 字段名，类型
 def GenerateClass_bean(type_name, attributes, isGson=False):
     lines = []
     # sorted(attributes):
@@ -268,7 +267,8 @@ def AccessorReplacements(attribute_name, attribute_type):
     # 驼峰命名首字母小写
     attribute_name = (camel_name[0].lower() + camel_name[1:])
     # 字段名称
-    field_attribute_name = 'm' + camel_name
+    # field_attribute_name = 'm' + camel_name
+    field_attribute_name = attribute_name
     
     annotat = ''
     if attribute_type == TODO:
