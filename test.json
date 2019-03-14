@@ -1,11 +1,30 @@
 {
-    "code": 1234,
-    "name": "hayukleung",
-    "value": 88.88,
-    "groups": [
-        {
-            "code": 1234,
-            "name": "hayukleung"
-        }
-    ]
+  "departureTime": "2019-04-03 06:26:00",
+  "stopSaleFlag": 0,
+  "contactInfo": {
+    "person": "黄开营",
+    "cellphone": "18924137688",
+    "email": ""
+  },
+  "issueTime": "1900-01-01 00:00:00",
+  "trainNo": "G102",
+  "changeFee": 0.00,
+  "orderState": "订单已过期",
+  "payType": "暂存单支付",
+  "ticketNo": "E922532944",
+  "arrivalTime": "2019-04-03 12:29:00",
+  "orderPrice": 553.00,
+  "orderStateCode": "O",
+  "orderNo": "TFT5C861CFU001685A8751179",
+  "placeTime": "2019-03-11 16:31:59",
+  "bookTime": "2019-03-11 16:31:58",
+  "outOrderNo": "1289c2f4-af74-4aa2-b4ec-f68400513687",
+  "fromStation": "上海虹桥",
+  "toStation": "北京南",
+  "trainDate": "2019-04-03 00:00:00",
+  "failureReason": "",
+  "payStatus": "0",
+  "payInfo": "",
+  "isChangedOrder": 0,
+  "originalOrderNo": ""
 }

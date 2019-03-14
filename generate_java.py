@@ -110,7 +110,8 @@ def parserAttributes(clazzName, jsondict, result={}):
     for key, value in jsondict.iteritems():
         
         if isinstance(value, (dict)):
-            typ = ''.join([word.capitalize() for word in key.split('_')]);
+            # typ = ''.join([word.capitalize() for word in key.split('_')]);
+            typ = ''.join([(word[0].upper() + word[1:]) for word in key.split('_')]);
             attributes.setdefault(key, (OBJCET, [typ]));
             parserAttributes(typ, value, result)
         elif isinstance(value, (list)):
@@ -118,7 +119,8 @@ def parserAttributes(clazzName, jsondict, result={}):
                 itemValue= value[0]
                 # 是字典类型在去迭代
                 if isinstance(itemValue, (dict)):
-                    subTyp = ''.join([word.capitalize() for word in key.split('_')]);
+                    # subTyp = ''.join([word.capitalize() for word in key.split('_')]);
+                    subTyp = ''.join([(word[0].upper() + word[1:]) for word in key.split('_')]);
                     parserAttributes(subTyp, itemValue, result)
                 elif isinstance(value, (str, unicode)) :
                     subTyp = STRING
@@ -129,7 +131,7 @@ def parserAttributes(clazzName, jsondict, result={}):
                 else :
                     subTyp = TODO
                 typeList = "List<" + subTyp + ">"
-                attributes.setdefault(key, (LIST, [typeList,subTyp]));
+                attributes.setdefault(key, (LIST, [typeList, subTyp]));
             else:
                 # 没有数据添加 TODO 标记
                 attributes.setdefault(key, (TODO, [TODO]));
@@ -174,7 +176,7 @@ GETTER = """\
 # setter 
 SETTER = """\
 %(annotate)spublic void set%(camel_name)s(%(attribute_type)s %(attribute_name)s) {
-%(annotate)s    %(field_name)s = %(attribute_name)s;
+%(annotate)s    this.%(field_name)s = %(attribute_name)s;
 %(annotate)s}
 """
 
@@ -237,11 +239,13 @@ def Header(type_name, isGson=False):
     else:
         interfaces = ' implements ' + ', '.join(interfaces)
     
-    return HEADER % {'type_name': type_name,
-                   'interfaces': interfaces ,
-                   'imports': imports,
-                   'timestamp': datetime.datetime.now(),
-                   'package':PACKAGE}
+    return HEADER % {
+        'type_name': type_name,
+        'interfaces': interfaces ,
+        'imports': imports,
+        'timestamp': datetime.datetime.now(),
+        'package': PACKAGE
+    }
 
 # 构造函数
 def Constructor(type_name):
@@ -269,7 +273,8 @@ def Footer():
 
 def AccessorReplacements(attribute_name, attribute_type):
     # 驼峰命名
-    camel_name = ''.join([word.capitalize() for word in attribute_name.split('_')])
+    # camel_name = ''.join([word.capitalize() for word in attribute_name.split('_')])
+    camel_name = attribute_name[0].upper() + attribute_name[1:]
     # 驼峰命名首字母小写
     attribute_name = (camel_name[0].lower() + camel_name[1:])
     # 字段名称
@@ -396,7 +401,7 @@ def Replacements(type_name, name):
         'timestamp': datetime.datetime.now(),
         'attr_name': name,
         'attr_camel_name': camel_name,
-        'package':PACKAGE,
+        'package': PACKAGE,
     }
 
 if __name__ == '__main__' :
