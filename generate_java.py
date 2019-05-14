@@ -2,7 +2,8 @@
 # -*- ecoding:utf-8 -*-
 
 import datetime
-import urllib2
+# import urllib2
+# import urllib.request
 import json
 import argparse
 import os
@@ -40,13 +41,13 @@ def main():
 
     content = arg.json
     if not content:
-        print "please input --json, specify the need for automatic generation of the class interface, must be a JSON structure"
+        print("please input --json, specify the need for automatic generation of the class interface, must be a JSON structure")
         exit()
 
     className = arg.className
     if not className:
-		print "please input --className, specify root class name" 
-		exit()
+        print("please input --className, specify root class name") 
+        exit()
 
     outPath = arg.outPath
     global PACKAGE 
@@ -66,11 +67,11 @@ def main():
         jsondata = jsondata[0]
         
     attributes = parserAttributes(className, jsondata);
-    for key, value in attributes.iteritems():
+    for key, value in attributes.items():
         #
         content = GenerateClass_bean(key, value, outType == 2)
         fileName = key + ".java"
-        print "creating... " + fileName;
+        print("creating... " + fileName);
         typePath = os.path.join(outPath, 'type');
         if not os.path.exists(typePath):
             os.mkdir(typePath)
@@ -80,7 +81,7 @@ def main():
         if outType == 1:
             # parser
             parserFileName = key + "Parser.java"
-            print "creating... " + parserFileName;
+            print("creating... " + parserFileName);
             parserContent = GenerateClass_parser(key, value);
             parserPath = os.path.join(outPath, 'parsers');
             if not os.path.exists(parserPath):
@@ -89,7 +90,7 @@ def main():
             writJava(parserFileName, parserContent)
 
 def writJava(fileName, content):
-    f = open(fileName, 'wb');
+    f = open(fileName, 'w');
     f.write(content);
     f.close()
 
@@ -107,7 +108,8 @@ def args():
 
 def parserAttributes(clazzName, jsondict, result={}):
     attributes = {}
-    for key, value in jsondict.iteritems():
+    
+    for key, value in jsondict.items():
         
         if isinstance(value, (dict)):
             # typ = ''.join([word.capitalize() for word in key.split('_')]);
@@ -122,7 +124,7 @@ def parserAttributes(clazzName, jsondict, result={}):
                     # subTyp = ''.join([word.capitalize() for word in key.split('_')]);
                     subTyp = ''.join([(word[0].upper() + word[1:]) for word in key.split('_')]);
                     parserAttributes(subTyp, itemValue, result)
-                elif isinstance(value, (str, unicode)) :
+                elif isinstance(value, (str, str)) :
                     subTyp = STRING
                 elif isinstance(value, (int)) :
                     subTyp = STRING
@@ -136,7 +138,7 @@ def parserAttributes(clazzName, jsondict, result={}):
                 # 没有数据添加 TODO 标记
                 attributes.setdefault(key, (TODO, [TODO]));
                 pass
-        elif isinstance(value, (str, unicode)) :
+        elif isinstance(value, (str, str)) :
             attributes.setdefault(key, (STRING, [STRING]));
         elif isinstance(value, (int)) :
             attributes.setdefault(key, (INT, [INT]));
